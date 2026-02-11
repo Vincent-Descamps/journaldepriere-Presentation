@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Journal de Prière — Une application pour grandir dans la prière</title>
+    <meta
+      name="description"
+      content="Journal de Prière est une application chrétienne gratuite, sans publicité, pour développer une vie de prière plus profonde et régulière."
+    />
+
+    <!-- Open Graph (partage réseaux) -->
+    <meta property="og:title" content="Journal de Prière" />
+    <meta property="og:description" content="Une application chrétienne gratuite pour grandir dans la prière 🙏" />
+    <meta property="og:type" content="website" />
+    <!-- Optionnel: ajoute une image og.jpg à la racine et décommente -->
+    <!-- <meta property="og:image" content="https://tonpseudo.github.io/tonrepo/og.jpg" /> -->
+
+    <style>
+      :root{
+        --bg:#fbfaf7;
+        --card:#ffffff;
+        --text:#1f2937;
+        --muted:#6b7280;
+        --accent:#d97706;    /* ambre doux */
+        --accent2:#7c3aed;   /* violet doux */
+        --border:rgba(31,41,55,.12);
+        --shadow: 0 10px 30px rgba(31,41,55,.08);
+        --radius: 18px;
+      }
+      *{box-sizing:border-box}
+      html,body{margin:0;padding:0}
+      body{
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+        color:var(--text);
+        background:
+          radial-gradient(1000px 600px at 20% 10%, rgba(217,119,6,.10), transparent 60%),
+          radial-gradient(900px 500px at 80% 20%, rgba(124,58,237,.10), transparent 55%),
+          var(--bg);
+        line-height:1.55;
+      }
+      a{color:inherit}
+      .container{max-width:1100px;margin:0 auto;padding:26px 18px}
+      header{
+        display:flex; align-items:center; justify-content:space-between;
+        gap:14px; padding:10px 0 16px;
+      }
+      .brand{
+        display:flex; align-items:center; gap:12px;
+        text-decoration:none;
+      }
+      .logo{
+        width:44px;height:44px;border-radius:14px;
+        background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.9), rgba(255,255,255,.2)),
+                    linear-gradient(135deg, rgba(217,119,6,.95), rgba(124,58,237,.85));
+        box-shadow: 0 10px 25px rgba(124,58,237,.18);
+        display:grid; place-items:center;
+        border:1px solid rgba(255,255,255,.7);
+      }
+      .logo span{font-size:20px}
+      .brand h1{font-size:15px;margin:0;letter-spacing:.2px}
+      .brand p{margin:0;font-size:12px;color:var(--muted)}
+      .pill{
+        display:inline-flex; gap:8px; align-items:center;
+        padding:9px 12px;border-radius:999px;
+        background: rgba(255,255,255,.7);
+        border:1px solid var(--border);
+        box-shadow: 0 8px 20px rgba(31,41,55,.06);
+        font-size:13px;
+      }
+      .hero{
+        display:grid; grid-template-columns: 1.15fr .85fr;
+        gap:22px; align-items:stretch;
+        margin-top:10px;
+      }
+      @media (max-width: 900px){
+        .hero{grid-template-columns:1fr; }
+      }
+      .card{
+        background: rgba(255,255,255,.78);
+        border:1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow:hidden;
+      }
+      .hero-left{padding:26px}
+      .kicker{
+        display:inline-flex; align-items:center; gap:8px;
+        padding:7px 10px; border-radius:999px;
+        background: rgba(217,119,6,.10);
+        border:1px solid rgba(217,119,6,.18);
+        color: #92400e;
+        font-size:13px;
+      }
+      .title{
+        margin:14px 0 10px;
+        font-size:44px; line-height:1.08; letter-spacing:-.8px;
+      }
+      @media (max-width: 520px){
+        .title{font-size:36px}
+      }
+      .subtitle{
+        margin:0 0 18px;
+        color:var(--muted);
+        font-size:17px;
+        max-width:56ch;
+      }
+      .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 6px}
+      .btn{
+        display:inline-flex;align-items:center;justify-content:center;
+        gap:10px;
+        padding:12px 14px;border-radius:14px;
+        border:1px solid var(--border);
+        background:#fff;
+        text-decoration:none;
+        font-weight:600;
+        box-shadow: 0 10px 20px rgba(31,41,55,.06);
+      }
+      .btn.primary{
+        background: linear-gradient(135deg, rgba(217,119,6,.95), rgba(124,58,237,.85));
+        color:white;
+        border-color: rgba(255,255,255,.25);
+      }
+      .btn small{font-weight:500; opacity:.85}
+      .note{
+        margin-top:10px;
+        font-size:13px; color:var(--muted);
+      }
+      .hero-right{padding:22px;display:grid;gap:12px}
+      .mock{
+        background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.55));
+        border:1px solid var(--border);
+        border-radius: 22px;
+        height: 380px;
+        display:grid; place-items:center;
+        position:relative;
+        overflow:hidden;
+      }
+      .mock::before{
+        content:"";
+        position:absolute; inset:-40%;
+        background: radial-gradient(circle at 20% 20%, rgba(217,119,6,.18), transparent 45%),
+                    radial-gradient(circle at 80% 35%, rgba(124,58,237,.18), transparent 45%),
+                    radial-gradient(circle at 55% 85%, rgba(217,119,6,.12), transparent 45%);
+        transform: rotate(10deg);
+      }
+      .mock .inner{
+        position:relative;
+        width:min(260px, 86%);
+        aspect-ratio: 9/19;
+        border-radius: 30px;
+        background: rgba(255,255,255,.88);
+        border:1px solid rgba(31,41,55,.14);
+        box-shadow: 0 18px 40px rgba(31,41,55,.10);
+        display:flex; flex-direction:column; justify-content:center; align-items:center;
+        padding:18px; gap:12px;
+      }
+      .mock .inner .dot{
+        width:60px;height:60px;border-radius:18px;
+        background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.9), rgba(255,255,255,.2)),
+                    linear-gradient(135deg, rgba(217,119,6,.95), rgba(124,58,237,.85));
+      }
+      .mock .inner p{margin:0;text-align:center;color:var(--muted);font-size:13px}
+      .grid{
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap:14px;
+      }
+      @media (max-width: 900px){
+        .grid{grid-template-columns:1fr}
+      }
+      section{margin-top:18px}
+      .section-card{padding:22px}
+      .h2{margin:0 0 10px;font-size:22px}
+      .lead{margin:0 0 14px;color:var(--muted)}
+      .feature{
+        background: rgba(255,255,255,.72);
+        border:1px solid var(--border);
+        border-radius: 16px;
+        padding:16px;
+      }
+      .feature h3{margin:0 0 6px;font-size:16px}
+      .feature p{margin:0;color:var(--muted);font-size:14px}
+      .quote{
+        padding:18px;
+        border-radius: 16px;
+        background: rgba(217,119,6,.08);
+        border:1px solid rgba(217,119,6,.14);
+        color:#7c2d12;
+      }
+      .quote p{margin:0}
+      .quote small{display:block;margin-top:8px;color:#9a3412;opacity:.9}
+      footer{
+        margin-top:18px;
+        padding:20px;
+        text-align:center;
+        color:var(--muted);
+        font-size:13px;
+      }
+      footer a{color:var(--muted)}
+      .links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+      .sep{opacity:.35}
+      .lang{
+        display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+        margin-top:14px;
+        color:var(--muted); font-size:13px;
+      }
+      .badge{
+        padding:4px 10px;border-radius:999px;border:1px solid var(--border);
+        background: rgba(255,255,255,.6);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <a class="brand" href="#">
+          <div class="logo" aria-hidden="true"><span>🙏</span></div>
+          <div>
+            <h1>Journal de Prière</h1>
+            <p>Grandir dans la prière, simplement.</p>
+          </div>
+        </a>
+        <div class="pill">✨ Gratuit • Sans publicité</div>
+      </header>
+
+      <div class="hero">
+        <div class="card hero-left">
+          <div class="kicker">🌿 Une application chrétienne de prière</div>
+          <h2 class="title">Un espace pour déposer tes prières…<br/>et voir Dieu agir.</h2>
+          <p class="subtitle">
+            <strong>Journal de Prière</strong> t’aide à construire une vie de prière plus profonde et régulière :
+            notes, intentions, gratitude, et versets pour t’accompagner au quotidien.
+          </p>
+
+          <div class="cta-row">
+            <!-- Remplace les # -->
+            <a class="btn primary" href="PLAY_STORE_URL" target="_blank" rel="noopener">
+              📱 <span>Télécharger (Google Play)</span>
+            </a>
+            <a class="btn" href="APP_STORE_URL" target="_blank" rel="noopener">
+              🍎 <span>App Store <small>(bientôt)</small></span>
+            </a>
+            <a class="btn" href="BUYMEACOFFEE_URL" target="_blank" rel="noopener">
+              ☕ <span>Soutenir le projet</span>
+            </a>
+          </div>
+
+          <div class="lang">
+            <span class="badge">FR</span>
+            <span>Pour le moment, l’app est surtout en français. Une version EN peut venir plus tard.</span>
+          </div>
+
+          <p class="note">
+            Aucun contenu n’est débloqué par un soutien : c’est simplement un geste pour encourager le développement ❤️
+          </p>
+        </div>
+
+        <div class="card hero-right">
+          <div class="mock" aria-label="Aperçu de l’application">
+            <div class="inner">
+              <div class="dot" aria-hidden="true"></div>
+              <p><strong>Ajoute ici tes captures</strong><br/>dans le dossier du site, puis remplace ce bloc.</p>
+              <p style="font-size:12px;opacity:.9">Ex: screenshots/1.png • screenshots/2.png</p>
+            </div>
+          </div>
+
+          <div class="quote">
+            <p>“Seigneur, apprends-nous à prier.”</p>
+            <small>— Luc 11:1</small>
+          </div>
+        </div>
+      </div>
+
+      <section class="card section-card">
+        <h2 class="h2">Pourquoi cette app ?</h2>
+        <p class="lead">
+          J’ai créé <strong>Journal de Prière</strong> avec un désir simple : offrir un outil doux, sans distraction,
+          pour aider chacun à développer une relation plus profonde et régulière avec Dieu 🙏
+        </p>
+      </section>
+
+      <section class="grid">
+        <div class="feature">
+          <h3>📝 Journal de prière</h3>
+          <p>Note tes prières, tes sujets, tes réponses, et garde une trace fidèle de ton cheminement.</p>
+        </div>
+        <div class="feature">
+          <h3>📖 Versets</h3>
+          <p>Des passages bibliques pour nourrir ta prière et t’encourager au quotidien.</p>
+        </div>
+        <div class="feature">
+          <h3>🌙 Simple & apaisant</h3>
+          <p>Une interface claire, chaleureuse, pensée pour te recentrer et prier sereinement.</p>
+        </div>
+      </section>
+
+      <section class="card section-card">
+        <h2 class="h2">Soutenir le développement</h2>
+        <p class="lead">
+          L’application est <strong>gratuite</strong> et <strong>sans publicité</strong> pour rester accessible à tous.
+          Si elle t’aide dans ta vie de prière, tu peux soutenir son développement via Buy Me a Coffee.
+        </p>
+        <div class="cta-row" style="margin-top:8px">
+          <a class="btn primary" href="BUYMEACOFFEE_URL" target="_blank" rel="noopener">
+            ☕ Soutenir Journal de Prière
+          </a>
+        </div>
+        <p class="note">Merci du fond du cœur pour ton soutien ❤️</p>
+      </section>
+
+      <footer class="card">
+        <div>© <span id="year"></span> Journal de Prière — Tous droits réservés</div>
+        <div class="links">
+          <a href="PRIVACY_POLICY_URL" target="_blank" rel="noopener">Politique de confidentialité</a>
+          <span class="sep">•</span>
+          <a href="mailto:CONTACT_EMAIL">Contact</a>
+          <span class="sep">•</span>
+          <a href="BUYMEACOFFEE_URL" target="_blank" rel="noopener">Soutenir</a>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
