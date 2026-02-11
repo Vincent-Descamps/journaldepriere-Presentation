@@ -3,18 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Journal de Prière — Une application pour grandir dans la prière</title>
+    <title>Journal de Prière — Prayer Journal App</title>
     <meta
       name="description"
-      content="Journal de Prière est une application chrétienne gratuite, sans publicité, pour développer une vie de prière plus profonde et régulière."
+      content="Journal de Prière is a free, ad-free Christian prayer journal app to help you grow in daily prayer."
     />
 
-    <!-- Open Graph (partage réseaux) -->
-    <meta property="og:title" content="Journal de Prière" />
-    <meta property="og:description" content="Une application chrétienne gratuite pour grandir dans la prière 🙏" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="Journal de Prière — Prayer Journal App" />
+    <meta property="og:description" content="A free, ad-free Christian prayer journal app to grow in daily prayer 🙏" />
     <meta property="og:type" content="website" />
-    <!-- Optionnel: ajoute une image og.jpg à la racine et décommente -->
-    <!-- <meta property="og:image" content="https://tonpseudo.github.io/tonrepo/og.jpg" /> -->
+    <!-- Optionnel: ajoute og.jpg à la racine et décommente -->
+    <!-- <meta property="og:image" content="https://vincent-descamps.github.io/journaldepriere-Presentation/og.jpg" /> -->
 
     <style>
       :root{
@@ -68,6 +68,28 @@
         box-shadow: 0 8px 20px rgba(31,41,55,.06);
         font-size:13px;
       }
+      .controls{
+        display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+      .lang-toggle{
+        display:inline-flex; align-items:center;
+        border:1px solid var(--border);
+        background: rgba(255,255,255,.7);
+        box-shadow: 0 8px 20px rgba(31,41,55,.06);
+        border-radius:999px;
+        overflow:hidden;
+      }
+      .lang-toggle button{
+        appearance:none; border:0; background:transparent;
+        padding:9px 12px; cursor:pointer;
+        font-weight:700; font-size:12px; color:var(--muted);
+      }
+      .lang-toggle button.active{
+        color:var(--text);
+        background: rgba(217,119,6,.12);
+      }
+
       .hero{
         display:grid; grid-template-columns: 1.15fr .85fr;
         gap:22px; align-items:stretch;
@@ -75,6 +97,7 @@
       }
       @media (max-width: 900px){
         .hero{grid-template-columns:1fr; }
+        .controls{justify-content:flex-start}
       }
       .card{
         background: rgba(255,255,255,.78);
@@ -113,7 +136,7 @@
         border:1px solid var(--border);
         background:#fff;
         text-decoration:none;
-        font-weight:600;
+        font-weight:700;
         box-shadow: 0 10px 20px rgba(31,41,55,.06);
       }
       .btn.primary{
@@ -121,7 +144,7 @@
         color:white;
         border-color: rgba(255,255,255,.25);
       }
-      .btn small{font-weight:500; opacity:.85}
+      .btn small{font-weight:600; opacity:.85}
       .note{
         margin-top:10px;
         font-size:13px; color:var(--muted);
@@ -154,13 +177,14 @@
         box-shadow: 0 18px 40px rgba(31,41,55,.10);
         display:flex; flex-direction:column; justify-content:center; align-items:center;
         padding:18px; gap:12px;
+        text-align:center;
       }
       .mock .inner .dot{
         width:60px;height:60px;border-radius:18px;
         background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.9), rgba(255,255,255,.2)),
                     linear-gradient(135deg, rgba(217,119,6,.95), rgba(124,58,237,.85));
       }
-      .mock .inner p{margin:0;text-align:center;color:var(--muted);font-size:13px}
+      .mock .inner p{margin:0;color:var(--muted);font-size:13px}
       .grid{
         display:grid;
         grid-template-columns: repeat(3, 1fr);
@@ -190,6 +214,7 @@
       }
       .quote p{margin:0}
       .quote small{display:block;margin-top:8px;color:#9a3412;opacity:.9}
+
       footer{
         margin-top:18px;
         padding:20px;
@@ -200,129 +225,220 @@
       footer a{color:var(--muted)}
       .links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px}
       .sep{opacity:.35}
-      .lang{
-        display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-        margin-top:14px;
-        color:var(--muted); font-size:13px;
-      }
-      .badge{
-        padding:4px 10px;border-radius:999px;border:1px solid var(--border);
-        background: rgba(255,255,255,.6);
-      }
+
+      /* Language switching */
+      [data-lang]{display:none;}
+      body.lang-fr [data-lang="fr"]{display:block;}
+      body.lang-en [data-lang="en"]{display:block;}
     </style>
   </head>
 
-  <body>
+  <body class="lang-fr">
     <div class="container">
       <header>
         <a class="brand" href="#">
           <div class="logo" aria-hidden="true"><span>🙏</span></div>
           <div>
             <h1>Journal de Prière</h1>
-            <p>Grandir dans la prière, simplement.</p>
+            <p data-lang="fr">Grandir dans la prière, simplement.</p>
+            <p data-lang="en">Grow in prayer, simply.</p>
           </div>
         </a>
-        <div class="pill">✨ Gratuit • Sans publicité</div>
+
+        <div class="controls">
+          <div class="pill">
+            <span data-lang="fr">✨ Gratuit • Sans publicité</span>
+            <span data-lang="en">✨ Free • Ad-free</span>
+          </div>
+
+          <div class="lang-toggle" role="group" aria-label="Language toggle">
+            <button id="btnFr" class="active" type="button">FR</button>
+            <button id="btnEn" type="button">EN</button>
+          </div>
+        </div>
       </header>
 
       <div class="hero">
         <div class="card hero-left">
-          <div class="kicker">🌿 Une application chrétienne de prière</div>
-          <h2 class="title">Un espace pour déposer tes prières…<br/>et voir Dieu agir.</h2>
-          <p class="subtitle">
+          <div class="kicker" data-lang="fr">🌿 Une application chrétienne de prière</div>
+          <div class="kicker" data-lang="en">🌿 A Christian prayer journal app</div>
+
+          <h2 class="title" data-lang="fr">Un espace pour déposer tes prières…<br/>et voir Dieu agir.</h2>
+          <h2 class="title" data-lang="en">A place to write your prayers…<br/>and remember God’s faithfulness.</h2>
+
+          <p class="subtitle" data-lang="fr">
             <strong>Journal de Prière</strong> t’aide à construire une vie de prière plus profonde et régulière :
             notes, intentions, gratitude, et versets pour t’accompagner au quotidien.
           </p>
+          <p class="subtitle" data-lang="en">
+            <strong>Journal de Prière</strong> helps you grow a deeper, more consistent prayer life:
+            prayers, requests, gratitude, and Bible verses to encourage you daily.
+          </p>
 
           <div class="cta-row">
-            <!-- Remplace les # -->
-           <!-- <a class="btn primary" href="PLAY_STORE_URL" target="_blank" rel="noopener">
-              📱 <span>Télécharger (Google Play)</span>
+            <!-- Remplace les URLs ci-dessous -->
+            <!--<a class="btn primary" href="PLAY_STORE_URL" target="_blank" rel="noopener">
+              📱 <span data-lang="fr">Télécharger (Google Play)</span>
+              <span data-lang="en">Get it on Google Play</span>
             </a>
+
             <a class="btn" href="APP_STORE_URL" target="_blank" rel="noopener">
-              🍎 <span>App Store <small>(bientôt)</small></span>
-            </a>
-            <a class="btn" href="BUYMEACOFFEE_URL" target="_blank" rel="noopener">
-              ☕ <span>Soutenir le projet</span>
+              🍎 <span data-lang="fr">App Store <small>(bientôt)</small></span>
+              <span data-lang="en">App Store <small>(coming soon)</small></span>
             </a>-->
+
+            <a class="btn" href="BUYMEACOFFEE_URL" target="_blank" rel="noopener">
+              ☕ <span data-lang="fr">Soutenir le projet</span>
+              <span data-lang="en">Support the project</span>
+            </a>
           </div>
 
-          <div class="lang">
-            <span class="badge">FR</span>
-            <span>Pour le moment, l’app est surtout en français. Une version EN peut venir plus tard.</span>
-          </div>
-
-          <p class="note">
+          <p class="note" data-lang="fr">
             Aucun contenu n’est débloqué par un soutien : c’est simplement un geste pour encourager le développement ❤️
+          </p>
+          <p class="note" data-lang="en">
+            Supporting doesn’t unlock any content — it’s simply a way to encourage development ❤️
           </p>
         </div>
 
         <div class="card hero-right">
-          <div class="mock" aria-label="Aperçu de l’application">
+          <div class="mock" aria-label="App preview">
             <div class="inner">
               <div class="dot" aria-hidden="true"></div>
-              <!--<p><strong>Ajoute ici tes captures</strong><br/>dans le dossier du site, puis remplace ce bloc.</p>
-              <p style="font-size:12px;opacity:.9">Ex: screenshots/1.png • screenshots/2.png</p>-->
+              <p data-lang="fr"><strong>Ajoute tes captures d’écran</strong><br/>puis remplace ce bloc.</p>
+              <p data-lang="en"><strong>Add your screenshots</strong><br/>then replace this block.</p>
+              <p style="font-size:12px;opacity:.9" data-lang="fr">Ex: screenshots/1.png • screenshots/2.png</p>
+              <p style="font-size:12px;opacity:.9" data-lang="en">E.g. screenshots/1.png • screenshots/2.png</p>
             </div>
           </div>
 
-          <div class="quote">
+          <div class="quote" data-lang="fr">
             <p>“Seigneur, apprends-nous à prier.”</p>
             <small>— Luc 11:1</small>
+          </div>
+          <div class="quote" data-lang="en">
+            <p>“Lord, teach us to pray.”</p>
+            <small>— Luke 11:1</small>
           </div>
         </div>
       </div>
 
       <section class="card section-card">
-        <h2 class="h2">Pourquoi cette app ?</h2>
-        <p class="lead">
+        <h2 class="h2" data-lang="fr">Pourquoi cette app ?</h2>
+        <h2 class="h2" data-lang="en">Why this app?</h2>
+
+        <p class="lead" data-lang="fr">
           J’ai créé <strong>Journal de Prière</strong> avec un désir simple : offrir un outil doux, sans distraction,
           pour aider chacun à développer une relation plus profonde et régulière avec Dieu 🙏
+        </p>
+        <p class="lead" data-lang="en">
+          I created <strong>Journal de Prière</strong> with a simple mission: a calm, distraction-free space
+          to help believers grow deeper and more consistent in their walk with God 🙏
         </p>
       </section>
 
       <section class="grid">
         <div class="feature">
-          <h3>📝 Journal de prière</h3>
-          <p>Note tes prières, tes sujets, tes réponses, et garde une trace fidèle de ton cheminement.</p>
+          <h3 data-lang="fr">📝 Journal de prière</h3>
+          <h3 data-lang="en">📝 Prayer journal</h3>
+          <p data-lang="fr">Note tes prières, tes sujets, tes réponses, et garde une trace fidèle de ton cheminement.</p>
+          <p data-lang="en">Write prayers, requests, and answered prayers — and keep a faithful record over time.</p>
         </div>
+
         <div class="feature">
-          <h3>📖 Versets</h3>
-          <p>Des passages bibliques pour nourrir ta prière et t’encourager au quotidien.</p>
+          <h3 data-lang="fr">📖 Versets</h3>
+          <h3 data-lang="en">📖 Bible verses</h3>
+          <p data-lang="fr">Des passages bibliques pour nourrir ta prière et t’encourager au quotidien.</p>
+          <p data-lang="en">Scripture to nourish your prayer and encourage you each day.</p>
         </div>
+
         <div class="feature">
-          <h3>🌙 Simple & apaisant</h3>
-          <p>Une interface claire, chaleureuse, pensée pour te recentrer et prier sereinement.</p>
+          <h3 data-lang="fr">🌙 Simple & apaisant</h3>
+          <h3 data-lang="en">🌙 Simple & peaceful</h3>
+          <p data-lang="fr">Une interface claire, chaleureuse, pensée pour te recentrer et prier sereinement.</p>
+          <p data-lang="en">A clean, warm design to help you refocus and pray in peace.</p>
         </div>
       </section>
 
       <section class="card section-card">
-        <h2 class="h2">Soutenir le développement</h2>
-        <p class="lead">
+        <h2 class="h2" data-lang="fr">Soutenir le développement</h2>
+        <h2 class="h2" data-lang="en">Support development</h2>
+
+        <p class="lead" data-lang="fr">
           L’application est <strong>gratuite</strong> et <strong>sans publicité</strong> pour rester accessible à tous.
           Si elle t’aide dans ta vie de prière, tu peux soutenir son développement via Buy Me a Coffee.
         </p>
+        <p class="lead" data-lang="en">
+          The app is <strong>free</strong> and <strong>ad-free</strong> so it can stay accessible to everyone.
+          If it blesses your prayer life, you can support its development via Buy Me a Coffee.
+        </p>
+
         <div class="cta-row" style="margin-top:8px">
           <a class="btn primary" href="BUYMEACOFFEE_URL" target="_blank" rel="noopener">
-            ☕ Soutenir Journal de Prière
+            ☕ <span data-lang="fr">Soutenir Journal de Prière</span>
+            <span data-lang="en">Support Journal de Prière</span>
           </a>
         </div>
-        <p class="note">Merci du fond du cœur pour ton soutien ❤️</p>
+
+        <p class="note" data-lang="fr">Merci du fond du cœur pour ton soutien ❤️</p>
+        <p class="note" data-lang="en">Thank you from the bottom of my heart ❤️</p>
       </section>
 
       <footer class="card">
-        <div>© <span id="year"></span> Journal de Prière — Tous droits réservés</div>
+        <div>© <span id="year"></span> Journal de Prière</div>
         <div class="links">
-          <a href="PRIVACY_POLICY_URL" target="_blank" rel="noopener">Politique de confidentialité</a>
+          <a href="https://vincent-descamps.github.io/journaldepriere-privacy/privacy.html" target="_blank" rel="noopener">
+            <span data-lang="fr">Politique de confidentialité</span>
+            <span data-lang="en">Privacy policy</span>
+          </a>
           <span class="sep">•</span>
-          <a href="mailto:CONTACT_EMAIL">Contact</a>
+          <a href="mailto:visualfaith06@gmail.com">
+            <span data-lang="fr">Contact</span>
+            <span data-lang="en">Contact</span>
+          </a>
           <span class="sep">•</span>
-          <a href="BUYMEACOFFEE_URL" target="_blank" rel="noopener">Soutenir</a>
+          <a href="https://buymeacoffee.com/vincedesca8" target="_blank" rel="noopener">
+            <span data-lang="fr">Soutenir</span>
+            <span data-lang="en">Support</span>
+          </a>
         </div>
       </footer>
     </div>
 
     <script>
+      // Year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Language toggle
+      const btnFr = document.getElementById("btnFr");
+      const btnEn = document.getElementById("btnEn");
+
+      function setLang(lang){
+        document.body.classList.toggle("lang-fr", lang === "fr");
+        document.body.classList.toggle("lang-en", lang === "en");
+        btnFr.classList.toggle("active", lang === "fr");
+        btnEn.classList.toggle("active", lang === "en");
+        localStorage.setItem("lang", lang);
+
+        // Update document language attribute
+        document.documentElement.lang = lang;
+      }
+
+      btnFr.addEventListener("click", () => setLang("fr"));
+      btnEn.addEventListener("click", () => setLang("en"));
+
+      // Auto-detect preferred language (saved > browser)
+      const saved = localStorage.getItem("lang");
+      if (saved === "fr" || saved === "en") {
+        setLang(saved);
+      } else {
+        const prefersFr = (navigator.language || "").toLowerCase().startsWith("fr");
+        setLang(prefersFr ? "fr" : "en");
+      }
+    </script>
+  </body>
+</html>
+
       document.getElementById("year").textContent = new Date().getFullYear();
     </script>
   </body>
